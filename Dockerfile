@@ -3,7 +3,7 @@ FROM alpine:3.11 as build
 LABEL authors="Carmen Tawalika,Markus Neteler"
 LABEL maintainer="tawalika@mundialis.de,neteler@mundialis.de"
 
-ARG PDAL_VERSION=1.8.0
+ARG PDAL_VERSION=2.1.0
 ARG LIBGEOTIFF_VERSION=1.5.1
 ARG LASZIP_VERSION=3.4.3
 ENV NUMTHREADS=4
