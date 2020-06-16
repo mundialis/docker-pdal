@@ -1,4 +1,4 @@
-FROM alpine:3.11 as build
+FROM alpine:3.12 as build
 
 LABEL authors="Carmen Tawalika,Markus Neteler"
 LABEL maintainer="tawalika@mundialis.de,neteler@mundialis.de"
@@ -16,9 +16,7 @@ ENV PDAL_BUILD_PKGS="curl-dev gdal-dev geos-dev jsoncpp-dev \
     libexecinfo-dev libunwind-dev libxml2-dev postgresql-dev python3-dev \
     py3-numpy-dev sqlite-dev"
 RUN apk update && apk add $BUILD_PKGS $LIBGEOTIFF_BUILD_PKGS $PDAL_BUILD_PKGS
-# TODO: replace edge testing packages as soon as possible.
-# hdf5 and laszip do not seem to have conflicting dependencies with 3.11
-RUN apk add --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing hdf5-dev
+RUN apk add hdf5-dev
 
 # compile libgeotiff
 WORKDIR /src
@@ -70,14 +68,13 @@ COPY simple.laz simple.laz
 RUN pdal info simple.laz
 
 
-FROM alpine:3.11 as pdal
+FROM alpine:3.12 as pdal
 
 RUN apk add curl jsoncpp libexecinfo libunwind
 RUN apk add gdal geos libxml2 postgresql python3 py3-numpy sqlite
 
 # get PDAL
 COPY --from=build /usr/bin/pdal* /usr/bin/
-COPY --from=build /usr/lib/pdal /usr/lib/pdal
 COPY --from=build /usr/lib/libpdal* /usr/lib/
 COPY --from=build /usr/lib/pkgconfig/pdal.pc /usr/lib/pkgconfig/pdal.pc
 COPY --from=build /usr/include/pdal /usr/include/pdal
