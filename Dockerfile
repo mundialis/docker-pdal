@@ -1,4 +1,4 @@
-FROM alpine:3.12 as build
+FROM alpine:3.19 as build
 
 LABEL authors="Carmen Tawalika,Markus Neteler"
 LABEL maintainer="tawalika@mundialis.de,neteler@mundialis.de"
@@ -68,7 +68,7 @@ COPY simple.laz simple.laz
 RUN pdal info simple.laz
 
 
-FROM alpine:3.12 as pdal
+FROM alpine:3.19 as pdal
 
 RUN apk add curl jsoncpp libexecinfo libunwind
 RUN apk add gdal geos libxml2 postgresql python3 py3-numpy sqlite
